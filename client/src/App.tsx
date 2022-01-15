@@ -1,3 +1,7 @@
 export const App = () => {
-  return <div>Exercise tracker 2022</div>;
+  return (
+    <div>
+      <h1>Exercise tracker</h1>
+    </div>
+  );
 };
