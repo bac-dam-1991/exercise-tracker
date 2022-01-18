@@ -1,7 +1,11 @@
+import {Outlet} from 'react-router-dom';
+import {Navbar} from './components/Navbar';
+
 export const App = () => {
   return (
-    <div>
-      <h1>Exercise tracker</h1>
-    </div>
+    <>
+      <Navbar />
+      <Outlet />
+    </>
   );
 };

@@ -9,8 +9,9 @@ module.exports = {
     app: path.join(__dirname, 'src', 'index.tsx'),
   },
   output: {
-    filename: 'index.js',
+    filename: 'static/js/index.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
   },
   target: 'web',
   resolve: {
@@ -39,5 +40,6 @@ module.exports = {
     },
     port: 3000,
     open: true,
+    historyApiFallback: true,
   },
 };
