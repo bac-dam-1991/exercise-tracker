@@ -12,8 +12,19 @@
     "prettier": "prettier"
   },
   "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@hookform/resolvers": "^2.8.5",
+    "@mui/icons-material": "^5.2.5",
+    "@mui/lab": "^5.0.0-alpha.64",
+    "@mui/material": "^5.2.8",
+    "axios": "^0.25.0",
+    "joi": "^17.5.0",
+    "notistack": "^2.0.3",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.24.0",
+    "react-router-dom": "^6.2.1"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.7",
@@ -29,5 +40,6 @@
     "webpack": "^5.66.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.3"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
