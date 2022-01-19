@@ -3,23 +3,39 @@ import {PageContainer} from '../components/PageContainer';
 import {Typography} from '../components/Typography';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import {useNavigate} from 'react-router-dom';
-import {useEffect} from 'react';
-import {deleteExerciseByIdApi} from '../apis/exercisesApis';
+import {useCallback, useEffect, useState} from 'react';
+import {deleteExerciseByIdApi, ExerciseDto} from '../apis/exercisesApis';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import {useLoadAllExercises} from '../hooks/useExercises';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import {Modal} from '../components/Modal';
 
 export const ExerciseListView = () => {
   const navigate = useNavigate();
   const {exercises, loadAllExercises} = useLoadAllExercises();
+  const [exerciseToDelete, setExerciseToDelete] = useState<ExerciseDto | null>(
+    null
+  );
 
   useEffect(() => {
     loadAllExercises();
   }, [loadAllExercises]);
 
-  const handleDelete = async (id: string) => {
-    await deleteExerciseByIdApi(id);
+  const handleDelete = useCallback(async () => {
+    if (!exerciseToDelete) {
+      return;
+    }
+    await deleteExerciseByIdApi(exerciseToDelete._id);
+
     await loadAllExercises();
+  }, [exerciseToDelete, loadAllExercises]);
+
+  const openDeleteModal = (exercise: ExerciseDto) => {
+    setExerciseToDelete(exercise);
+  };
+
+  const closeDeleteModal = () => {
+    setExerciseToDelete(null);
   };
 
   return (
@@ -50,7 +66,7 @@ export const ExerciseListView = () => {
                     onClick={() => navigate(`/exercise/update/${item._id}`)}>
                     <EditRoundedIcon />
                   </IconButton>
-                  <IconButton onClick={() => handleDelete(item._id)}>
+                  <IconButton onClick={() => openDeleteModal(item)}>
                     <DeleteForeverRoundedIcon />
                   </IconButton>
                 </Stack>
@@ -58,6 +74,17 @@ export const ExerciseListView = () => {
             );
           })}
         </Stack>
+        <Modal
+          open={Boolean(exerciseToDelete)}
+          title='Delete exercise'
+          onCancel={closeDeleteModal}
+          onConfirm={handleDelete}>
+          {exerciseToDelete && (
+            <Typography>
+              Are you sure you want to delete {exerciseToDelete.name}?
+            </Typography>
+          )}
+        </Modal>
       </PageContainer>
     </>
   );
