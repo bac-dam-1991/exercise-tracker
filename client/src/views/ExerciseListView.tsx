@@ -26,7 +26,7 @@ export const ExerciseListView = () => {
       return;
     }
     await deleteExerciseByIdApi(exerciseToDelete._id);
-
+    setExerciseToDelete(null);
     await loadAllExercises();
   }, [exerciseToDelete, loadAllExercises]);
 
@@ -49,7 +49,7 @@ export const ExerciseListView = () => {
             sx={{marginBottom: 2}}>
             <Typography variant='page-title'>Exercise list</Typography>
             <Tooltip title='Add new exercise' arrow placement={'top'}>
-              <IconButton onClick={() => navigate('/exercise/add')}>
+              <IconButton onClick={() => navigate('/exercises/add')}>
                 <AddCircleOutlineRoundedIcon />
               </IconButton>
             </Tooltip>
@@ -63,7 +63,7 @@ export const ExerciseListView = () => {
                 <Typography variant='body-text'>{item.name}</Typography>
                 <Stack direction='row' spacing={2}>
                   <IconButton
-                    onClick={() => navigate(`/exercise/update/${item._id}`)}>
+                    onClick={() => navigate(`/exercises/update/${item._id}`)}>
                     <EditRoundedIcon />
                   </IconButton>
                   <IconButton onClick={() => openDeleteModal(item)}>

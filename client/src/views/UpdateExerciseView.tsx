@@ -21,7 +21,7 @@ export const UpdateExerciseView = () => {
     const {name} = formData;
     const payload: ExercisePayload = {name};
     await updateExerciseApi(params.id as string, payload);
-    navigate('/exercise');
+    navigate('/exercises');
   };
   return (
     <PageContainer>
@@ -31,7 +31,7 @@ export const UpdateExerciseView = () => {
         spacing={2}
         sx={{marginBottom: 2}}>
         <Tooltip title='Return' arrow placement={'top'}>
-          <IconButton onClick={() => navigate('/exercise')}>
+          <IconButton onClick={() => navigate('/exercises')}>
             <ChevronLeftRoundedIcon />
           </IconButton>
         </Tooltip>

@@ -12,8 +12,11 @@ export const Navbar = () => {
           <Button color='inherit' component={Link} to='/profile'>
             Profile
           </Button>
-          <Button color='inherit' component={Link} to='/exercise'>
+          <Button color='inherit' component={Link} to='/exercises'>
             Exercises
+          </Button>
+          <Button color='inherit' component={Link} to='/routines'>
+            Routines
           </Button>
         </Toolbar>
       </AppBar>
