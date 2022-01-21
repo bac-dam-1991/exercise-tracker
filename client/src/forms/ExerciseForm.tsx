@@ -1,7 +1,5 @@
 import {LoadingButton} from '@mui/lab';
 import {Stack, TextField} from '@mui/material';
-import {useSnackbar} from 'notistack';
-import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
@@ -16,31 +14,20 @@ export const exerciseFormSchema = Joi.object({
 
 export interface ExerciseFormProps {
   defaultValues?: ExerciseFormFields;
-  performNextAction: (formData: ExerciseFormFields) => Promise<void>;
+  onSubmit: (formData: ExerciseFormFields) => Promise<void>;
+  loading?: boolean;
 }
 
 export const ExerciseForm = ({
   defaultValues,
-  performNextAction,
+  onSubmit,
+  loading,
 }: ExerciseFormProps) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const {enqueueSnackbar} = useSnackbar();
   const {register, handleSubmit, formState} = useForm<ExerciseFormFields>({
     defaultValues,
     resolver: joiResolver(exerciseFormSchema),
   });
   const {errors} = formState;
-
-  const onSubmit = async (formData: ExerciseFormFields) => {
-    try {
-      setLoading(true);
-      await performNextAction(formData);
-    } catch (error) {
-      enqueueSnackbar((error as Error).message, {variant: 'error'});
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

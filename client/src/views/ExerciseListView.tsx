@@ -3,24 +3,52 @@ import {PageContainer} from '../components/PageContainer';
 import {Typography} from '../components/Typography';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import {useNavigate} from 'react-router-dom';
-import {useEffect} from 'react';
-import {deleteExerciseByIdApi} from '../apis/exercisesApis';
+import {useCallback, useEffect, useState} from 'react';
+import {deleteExerciseByIdApi, ExerciseDto} from '../apis/exercisesApis';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import {useLoadAllExercises} from '../hooks/useExercises';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import {Modal} from '../components/Modal';
 
 export const ExerciseListView = () => {
   const navigate = useNavigate();
   const {exercises, loadAllExercises} = useLoadAllExercises();
+  const [exerciseToDelete, setExerciseToDelete] = useState<ExerciseDto | null>(
+    null
+  );
 
   useEffect(() => {
     loadAllExercises();
   }, [loadAllExercises]);
 
-  const handleDelete = async (id: string) => {
-    await deleteExerciseByIdApi(id);
+  const handleDelete = useCallback(async () => {
+    if (!exerciseToDelete) {
+      return;
+    }
+    await deleteExerciseByIdApi(exerciseToDelete._id);
+    setExerciseToDelete(null);
     await loadAllExercises();
+  }, [exerciseToDelete, loadAllExercises]);
+
+  const openDeleteModal = (exercise: ExerciseDto) => {
+    setExerciseToDelete(exercise);
   };
+
+  const closeDeleteModal = () => {
+    setExerciseToDelete(null);
+  };
+
+  useEffect(() => {
+    window.document.onkeyup = (e: KeyboardEvent) => {
+      if (e.key === '+') {
+        navigate('/exercises/add');
+      }
+      console.log(e);
+    };
+    return () => {
+      window.document.onkeyup = null;
+    };
+  }, []);
 
   return (
     <>
@@ -33,7 +61,7 @@ export const ExerciseListView = () => {
             sx={{marginBottom: 2}}>
             <Typography variant='page-title'>Exercise list</Typography>
             <Tooltip title='Add new exercise' arrow placement={'top'}>
-              <IconButton onClick={() => navigate('/exercise/add')}>
+              <IconButton onClick={() => navigate('/exercises/add')}>
                 <AddCircleOutlineRoundedIcon />
               </IconButton>
             </Tooltip>
@@ -47,10 +75,10 @@ export const ExerciseListView = () => {
                 <Typography variant='body-text'>{item.name}</Typography>
                 <Stack direction='row' spacing={2}>
                   <IconButton
-                    onClick={() => navigate(`/exercise/update/${item._id}`)}>
+                    onClick={() => navigate(`/exercises/${item._id}/update`)}>
                     <EditRoundedIcon />
                   </IconButton>
-                  <IconButton onClick={() => handleDelete(item._id)}>
+                  <IconButton onClick={() => openDeleteModal(item)}>
                     <DeleteForeverRoundedIcon />
                   </IconButton>
                 </Stack>
@@ -58,6 +86,17 @@ export const ExerciseListView = () => {
             );
           })}
         </Stack>
+        <Modal
+          open={Boolean(exerciseToDelete)}
+          title='Delete exercise'
+          onCancel={closeDeleteModal}
+          onConfirm={handleDelete}>
+          {exerciseToDelete && (
+            <Typography>
+              Are you sure you want to delete {exerciseToDelete.name}?
+            </Typography>
+          )}
+        </Modal>
       </PageContainer>
     </>
   );
