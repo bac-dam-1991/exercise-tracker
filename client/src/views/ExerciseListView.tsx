@@ -75,7 +75,7 @@ export const ExerciseListView = () => {
                 <Typography variant='body-text'>{item.name}</Typography>
                 <Stack direction='row' spacing={2}>
                   <IconButton
-                    onClick={() => navigate(`/exercises/update/${item._id}`)}>
+                    onClick={() => navigate(`/exercises/${item._id}/update`)}>
                     <EditRoundedIcon />
                   </IconButton>
                   <IconButton onClick={() => openDeleteModal(item)}>

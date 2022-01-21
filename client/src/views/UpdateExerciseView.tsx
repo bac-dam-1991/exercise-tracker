@@ -17,7 +17,10 @@ export const UpdateExerciseView = () => {
   const {enqueueSnackbar} = useSnackbar();
 
   useEffect(() => {
-    loadExerciseById(params.id as string);
+    if (!params.id) {
+      return;
+    }
+    loadExerciseById(params.id);
   }, [loadExerciseById]);
 
   const updateExercise = async (formData: ExerciseFormFields) => {
@@ -33,27 +36,31 @@ export const UpdateExerciseView = () => {
   };
   return (
     <PageContainer>
-      <Stack
-        direction='row'
-        alignItems={'center'}
-        spacing={2}
-        sx={{marginBottom: 2}}>
-        <Tooltip title='Return' arrow placement={'top'}>
-          <IconButton onClick={() => navigate('/exercises')}>
-            <ChevronLeftRoundedIcon />
-          </IconButton>
-        </Tooltip>
-        <Typography variant='page-title'>
-          Update exercise {exercise && exercise.name}
-        </Typography>
-      </Stack>
       {exercise && (
-        <Box sx={{maxWidth: 400, margin: 'auto'}}>
-          <ExerciseForm
-            onSubmit={updateExercise}
-            defaultValues={{name: exercise.name}}
-          />
-        </Box>
+        <>
+          <Stack
+            direction='row'
+            alignItems={'center'}
+            spacing={2}
+            sx={{marginBottom: 2}}>
+            <Tooltip title='Return' arrow placement={'top'}>
+              <IconButton onClick={() => navigate('/exercises')}>
+                <ChevronLeftRoundedIcon />
+              </IconButton>
+            </Tooltip>
+            <Typography variant='page-title'>
+              Update exercise {exercise.name}
+            </Typography>
+          </Stack>
+
+          <Box sx={{maxWidth: 400, margin: 'auto'}}>
+            <ExerciseForm
+              onSubmit={updateExercise}
+              defaultValues={{name: exercise.name}}
+              loading={loading}
+            />
+          </Box>
+        </>
       )}
     </PageContainer>
   );

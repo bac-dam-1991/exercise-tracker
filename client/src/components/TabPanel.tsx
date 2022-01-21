@@ -1,5 +1,12 @@
 import {Box, BoxProps} from '@mui/material';
 
+export const a11yProps = (index: number) => {
+  return {
+    id: `tab-${index}`,
+    'aria-controls': `tabpanel-${index}`,
+  };
+};
+
 export interface TabPanelProps extends BoxProps {
   children?: React.ReactNode;
   index: number;

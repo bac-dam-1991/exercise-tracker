@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
   } catch (error) {
     console.log({
       message: (error as Error).message,
-      path: path.join(__dirname, 'getExercises'),
+      path: path.join(__dirname, 'getExercisesController'),
     });
     next(error);
   }
@@ -30,7 +30,7 @@ router.get('/:id', async (req, res, next) => {
   } catch (error) {
     console.log({
       message: (error as Error).message,
-      path: path.join(__dirname, 'getExerciseById'),
+      path: path.join(__dirname, 'getExerciseByIdController'),
     });
     next(error);
   }
@@ -44,7 +44,10 @@ router.post('/', async (req, res, next) => {
     });
     res.status(201).send(result);
   } catch (error) {
-    console.log({message: (error as Error).message, path: 'insertExercise'});
+    console.log({
+      message: (error as Error).message,
+      path: path.join(__dirname, 'insertExerciseController'),
+    });
     next(error);
   }
 });
@@ -57,7 +60,10 @@ router.delete('/:id', async (req, res, next) => {
     });
     res.status(201).send(result);
   } catch (error) {
-    console.log({message: (error as Error).message, path: 'deleteExercise'});
+    console.log({
+      message: (error as Error).message,
+      path: path.join(__dirname, 'deleteExerciseController'),
+    });
     next(error);
   }
 });
@@ -79,7 +85,10 @@ router.put('/:id', async (req, res, next) => {
     );
     res.status(200).send(result);
   } catch (error) {
-    console.log({message: (error as Error).message, path: 'updateExercise'});
+    console.log({
+      message: (error as Error).message,
+      path: path.join(__dirname, 'updateExerciseController'),
+    });
     next(error);
   }
 });

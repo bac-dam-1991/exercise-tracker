@@ -10,6 +10,7 @@ import {UpdateExerciseView} from './views/UpdateExerciseView';
 import {SnackbarProvider} from 'notistack';
 import {RoutinesView} from './views/RoutinesView';
 import {AddRoutineView} from './views/AddRoutineView';
+import {UpdateRoutineView} from './views/UpdateRoutineView';
 
 render(
   <BrowserRouter>
@@ -22,11 +23,12 @@ render(
           <Route path='exercises'>
             <Route index element={<ExerciseListView />} />
             <Route path='add' element={<AddNewExerciseView />} />
-            <Route path='update/:id' element={<UpdateExerciseView />} />
+            <Route path=':id/update' element={<UpdateExerciseView />} />
           </Route>
           <Route path='routines'>
             <Route index element={<RoutinesView />} />
             <Route path='add' element={<AddRoutineView />} />
+            <Route path=':id/update' element={<UpdateRoutineView />} />
           </Route>
         </Route>
       </Routes>
