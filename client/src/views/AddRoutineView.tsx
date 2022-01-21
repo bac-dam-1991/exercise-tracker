@@ -8,14 +8,13 @@ import {
   Tabs,
   Box,
   Tab,
-  Button,
 } from '@mui/material';
 import {Typography} from '../components/Typography';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import {useNavigate} from 'react-router-dom';
 import {ChangeEvent, SyntheticEvent, useEffect, useState} from 'react';
 import {TabPanel} from '../components/TabPanel';
-import {RoutineForm} from '../forms/RoutineForm';
+import {RoutineDayForm} from '../forms/RoutineDayForm';
 
 export enum RoutineDuration {
   Weekly = 'Weekly',
@@ -73,6 +72,7 @@ export const AddRoutineView = () => {
           </Tooltip>
           <Typography variant='page-title'>Add new routine</Typography>
         </Stack>
+        <TextField size='small' label='Name' />
         <TextField
           select
           label='Routine duration'
@@ -114,7 +114,9 @@ export const AddRoutineView = () => {
                 sx={{width: '100%'}}>
                 <Stack direction='column' spacing={2} sx={{width: '100%'}}>
                   <Typography variant='heading'>Day {index + 1}</Typography>
-                  <RoutineForm />
+                  <RoutineDayForm
+                    defaultValues={{dayIndex: index, exercises: []}}
+                  />
                 </Stack>
               </TabPanel>
             );

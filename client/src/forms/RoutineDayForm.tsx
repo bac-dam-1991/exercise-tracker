@@ -15,19 +15,19 @@ import Joi from 'joi';
 import {joiResolver} from '@hookform/resolvers/joi';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
-export interface Routine {
+export interface ExerciseRoutine {
   exercise: string;
   setType: 'rep' | 'time';
   amount: string;
   setCount: string;
 }
 
-export interface RoutineFormFields {
+export interface RoutineDayFormFields {
   dayIndex: number;
-  exercises: Routine[];
+  exercises: ExerciseRoutine[];
 }
 
-export const schema = Joi.object({
+export const RoutineDaySchema = Joi.object({
   dayIndex: Joi.number().required(),
   exercises: Joi.array().items({
     exercise: Joi.string()
@@ -46,9 +46,11 @@ export const schema = Joi.object({
   }),
 });
 
-export interface RoutineFormProps {}
+export interface RoutineDayFormProps {
+  defaultValues?: RoutineDayFormFields;
+}
 
-export const RoutineForm = () => {
+export const RoutineDayForm = ({defaultValues}: RoutineDayFormProps) => {
   const {loading, exercises, loadAllExercises} = useLoadAllExercises();
   const {
     register,
@@ -56,9 +58,9 @@ export const RoutineForm = () => {
     control,
     watch,
     formState: {errors},
-  } = useForm<RoutineFormFields>({
-    defaultValues: {dayIndex: 0, exercises: [{}]},
-    resolver: joiResolver(schema),
+  } = useForm<RoutineDayFormFields>({
+    defaultValues,
+    resolver: joiResolver(RoutineDaySchema),
   });
 
   const {fields, append, remove} = useFieldArray({
@@ -80,7 +82,7 @@ export const RoutineForm = () => {
         {fields.map((item, index) => {
           const {name, ...rest} = register(`exercises.${index}.exercise`);
           const errorExercises = errors.exercises;
-          let currentErrors: FieldErrors<Routine> = {};
+          let currentErrors: FieldErrors<ExerciseRoutine> = {};
           if (errorExercises) {
             currentErrors = errorExercises[index];
           }

@@ -38,6 +38,18 @@ export const ExerciseListView = () => {
     setExerciseToDelete(null);
   };
 
+  useEffect(() => {
+    window.document.onkeyup = (e: KeyboardEvent) => {
+      if (e.key === '+') {
+        navigate('/exercises/add');
+      }
+      console.log(e);
+    };
+    return () => {
+      window.document.onkeyup = null;
+    };
+  }, []);
+
   return (
     <>
       <PageContainer>
