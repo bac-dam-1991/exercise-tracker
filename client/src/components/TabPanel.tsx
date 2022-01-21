@@ -1,5 +1,4 @@
 import {Box, BoxProps} from '@mui/material';
-import {Typography} from './Typography';
 
 export interface TabPanelProps extends BoxProps {
   children?: React.ReactNode;
@@ -15,11 +14,7 @@ export const TabPanel = ({children, value, index, ...other}: TabPanelProps) => {
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
       {...other}>
-      {value === index && (
-        <Box sx={{p: 3}}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{p: 3}}>{children}</Box>}
     </Box>
   );
 };

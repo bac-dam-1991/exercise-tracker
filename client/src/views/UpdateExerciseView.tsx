@@ -5,23 +5,31 @@ import {ExerciseForm, ExerciseFormFields} from '../forms/ExerciseForm';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import {useNavigate, useParams} from 'react-router-dom';
 import {ExercisePayload, updateExerciseApi} from '../apis/exercisesApis';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useLoadExerciseById} from '../hooks/useExercises';
+import {useSnackbar} from 'notistack';
 
 export const UpdateExerciseView = () => {
   const params = useParams();
   const navigate = useNavigate();
   const {loadExerciseById, exercise} = useLoadExerciseById();
+  const [loading, setLoading] = useState<boolean>(false);
+  const {enqueueSnackbar} = useSnackbar();
 
   useEffect(() => {
     loadExerciseById(params.id as string);
   }, [loadExerciseById]);
 
   const updateExercise = async (formData: ExerciseFormFields) => {
-    const {name} = formData;
-    const payload: ExercisePayload = {name};
-    await updateExerciseApi(params.id as string, payload);
-    navigate('/exercises');
+    try {
+      setLoading(true);
+      const {name} = formData;
+      const payload: ExercisePayload = {name};
+      await updateExerciseApi(params.id as string, payload);
+      navigate('/exercises');
+    } catch (error) {
+      enqueueSnackbar((error as Error).message, {variant: 'error'});
+    }
   };
   return (
     <PageContainer>
@@ -42,7 +50,7 @@ export const UpdateExerciseView = () => {
       {exercise && (
         <Box sx={{maxWidth: 400, margin: 'auto'}}>
           <ExerciseForm
-            performNextAction={updateExercise}
+            onSubmit={updateExercise}
             defaultValues={{name: exercise.name}}
           />
         </Box>

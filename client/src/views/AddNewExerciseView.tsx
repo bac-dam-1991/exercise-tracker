@@ -5,15 +5,26 @@ import {ExerciseForm, ExerciseFormFields} from '../forms/ExerciseForm';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import {useNavigate} from 'react-router-dom';
 import {ExercisePayload, insertNewExerciseApi} from '../apis/exercisesApis';
+import {useState} from 'react';
+import {useSnackbar} from 'notistack';
 
 export const AddNewExerciseView = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const {enqueueSnackbar} = useSnackbar();
+
   const addExercise = async (formData: ExerciseFormFields) => {
-    const {name} = formData;
-    const payload: ExercisePayload = {name};
-    await insertNewExerciseApi(payload);
-    navigate('/exercises');
+    try {
+      setLoading(true);
+      const {name} = formData;
+      const payload: ExercisePayload = {name};
+      await insertNewExerciseApi(payload);
+      navigate('/exercises');
+    } catch (error) {
+      enqueueSnackbar((error as Error).message, {variant: 'error'});
+    }
   };
+
   return (
     <PageContainer>
       <Stack
@@ -29,7 +40,7 @@ export const AddNewExerciseView = () => {
         <Typography variant='page-title'>Add new exercise</Typography>
       </Stack>
       <Box sx={{maxWidth: 400, margin: 'auto'}}>
-        <ExerciseForm performNextAction={addExercise} />
+        <ExerciseForm onSubmit={addExercise} loading={loading} />
       </Box>
     </PageContainer>
   );
