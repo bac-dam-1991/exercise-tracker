@@ -8,6 +8,7 @@ import {RoutineDayForm} from '../forms/RoutineDayForm';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import {useNavigate} from 'react-router-dom';
 import {useLoadRoutineById} from '../hooks/useRoutines';
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 
 export const UpdateRoutineView = () => {
   const [currentTabIndex, setCurrentTabIndex] = useState<number>(0);
@@ -67,20 +68,26 @@ export const UpdateRoutineView = () => {
                 (item, index) => {
                   return (
                     <TabPanel
+                      key={item}
                       value={currentTabIndex}
                       index={index}
-                      key={item}
                       sx={{width: '100%'}}>
                       <Stack
-                        direction='column'
-                        spacing={2}
-                        sx={{width: '100%'}}>
+                        direction='row'
+                        alignItems={'center'}
+                        justifyContent={'space-between'}
+                        sx={{marginBottom: 2}}>
                         <Typography variant='heading'>
                           Day {index + 1}
                         </Typography>
-                        <RoutineDayForm
-                          defaultValues={{dayIndex: index, exercises: []}}
-                        />
+                        <Tooltip
+                          title='Add exercise to routine'
+                          arrow
+                          placement={'top'}>
+                          <IconButton>
+                            <AddCircleOutlineRoundedIcon />
+                          </IconButton>
+                        </Tooltip>
                       </Stack>
                     </TabPanel>
                   );

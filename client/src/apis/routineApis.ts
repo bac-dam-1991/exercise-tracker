@@ -1,6 +1,6 @@
 import axios from 'axios';
+import {ExerciseFormFields} from '../forms/ExerciseForm';
 import {RoutineBasicDetailsFormFields} from '../forms/RoutineBasicDetailsForm';
-import {ExerciseRoutine} from '../forms/RoutineDayForm';
 import {WithId, WithMetaData} from '../types/UtilTypes';
 
 const routinesAxios = axios.create({
@@ -8,17 +8,17 @@ const routinesAxios = axios.create({
 });
 
 export type RoutineDto = WithId<WithMetaData<RoutineBasicDetailsFormFields>> & {
-  exerciseRoutines: WithId<ExerciseRoutine>[];
+  exerciseRoutines: WithId<ExerciseFormFields>[];
 };
 
 export const getAllRoutinesApi = async () => {
   const response = await routinesAxios.get<RoutineDto[]>('/');
-  console.log(response.data);
   return response.data;
 };
 
 export const getRoutineByIdApi = async (id: string) => {
   const response = await routinesAxios.get<RoutineDto>(`/${id}`);
+  console.log(response.data);
   return response.data;
 };
 

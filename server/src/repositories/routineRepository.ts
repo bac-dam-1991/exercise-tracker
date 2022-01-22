@@ -9,14 +9,68 @@ export interface GetRoutineByIdRepoParams {
 
 export const getRoutineByIdRepo = async ({id}: GetRoutineByIdRepoParams) => {
   try {
-    const cursor = await find('routines', {
-      _id: new ObjectId(id),
-    });
+    const cursor = await aggregate('routines', [
+      {
+        $match: {
+          _id: new ObjectId(id),
+        },
+      },
+      {
+        $unwind: {path: '$exerciseRoutines', preserveNullAndEmptyArrays: true},
+      },
+      {
+        $lookup: {
+          from: 'exercises',
+          localField: 'exerciseRoutines.id',
+          foreignField: '_id',
+          as: 'exerciseRoutines.exercise',
+        },
+      },
+      {
+        $unwind: {
+          path: '$exerciseRoutines.exercise',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          exerciseRoutines: {
+            $push: '$exerciseRoutines',
+          },
+          updatedAt: {$first: '$updatedAt'},
+          createdAt: {$first: '$createdAt'},
+          name: {$first: '$name'},
+          duration: {$first: '$duration'},
+        },
+      },
+      {
+        $addFields: {
+          count: {
+            $size: '$exerciseRoutines',
+          },
+        },
+      },
+    ]);
+
     const result = await cursor.toArray();
+
     if (result.length !== 1) {
       throw new Error('Could not find routine with given id.');
     }
-    return result[0];
+
+    const routine = result[0];
+
+    routine.exerciseRoutines = routine.exerciseRoutines.filter(
+      (exercise: Record<string, unknown>) => {
+        if (!Object.keys(exercise).length) {
+          return false;
+        }
+        return true;
+      }
+    );
+
+    return routine;
   } catch (error) {
     console.log({
       message: (error as Error).message,
@@ -28,33 +82,7 @@ export const getRoutineByIdRepo = async ({id}: GetRoutineByIdRepoParams) => {
 
 export const getAllRoutinesRepo = async () => {
   try {
-    const cursor = await aggregate('routines', [
-      {
-        $unwind: '$exerciseRoutines',
-      },
-      {
-        $lookup: {
-          from: 'exercises',
-          localField: 'exerciseRoutines.id',
-          foreignField: '_id',
-          as: 'exerciseRoutines.exercise',
-        },
-      },
-      {
-        $unwind: '$exerciseRoutines.exercise',
-      },
-      {
-        $group: {
-          _id: '$_id',
-          exerciseRoutines: {$push: '$exerciseRoutines'},
-          updatedAt: {$first: '$updatedAt'},
-          createdAt: {$first: '$createdAt'},
-          name: {$first: '$name'},
-          duration: {$first: '$duration'},
-        },
-      },
-    ]);
-
+    const cursor = await find('routines');
     const result = await cursor.toArray();
     return result;
   } catch (error) {
