@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import {
+  addExercisesToRoutineService,
   createNewRoutineService,
   getAllRoutinesService,
   getRoutineByIdService,
@@ -43,6 +44,21 @@ router.post('/', async (req, res, next) => {
     console.log({
       message: (error as Error).message,
       path: path.join(__dirname, 'createNewRoutineController'),
+    });
+    next(error);
+  }
+});
+
+router.put('/:id/exercise/add', async (req, res, next) => {
+  try {
+    const {exerciseRoutines} = req.body;
+    const id = req.params.id;
+    const result = await addExercisesToRoutineService({id, exerciseRoutines});
+    res.status(201).send(result);
+  } catch (error) {
+    console.log({
+      message: (error as Error).message,
+      path: path.join(__dirname, 'addExercisesToRoutineControlle'),
     });
     next(error);
   }

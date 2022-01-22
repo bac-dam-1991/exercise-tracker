@@ -16,7 +16,7 @@ import {joiResolver} from '@hookform/resolvers/joi';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 export interface ExerciseRoutine {
-  exercise: string;
+  name: string;
   setType: 'rep' | 'time';
   amount: string;
   setCount: string;
@@ -30,7 +30,7 @@ export interface RoutineDayFormFields {
 export const RoutineDaySchema = Joi.object({
   dayIndex: Joi.number().required(),
   exercises: Joi.array().items({
-    exercise: Joi.string()
+    name: Joi.string()
       .required()
       .messages({'string.empty': 'Please select an exercise.'}),
     setType: Joi.string().valid('rep', 'time').required(),
@@ -80,7 +80,7 @@ export const RoutineDayForm = ({defaultValues}: RoutineDayFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack direction='column' spacing={2}>
         {fields.map((item, index) => {
-          const {name, ...rest} = register(`exercises.${index}.exercise`);
+          const {name, onChange, ...rest} = register(`exercises.${index}.name`);
           const errorExercises = errors.exercises;
           let currentErrors: FieldErrors<ExerciseRoutine> = {};
           if (errorExercises) {
@@ -110,13 +110,11 @@ export const RoutineDayForm = ({defaultValues}: RoutineDayFormProps) => {
                     renderInput={(params) => {
                       return (
                         <TextField
-                          error={Boolean(
-                            currentErrors && currentErrors.exercise
-                          )}
+                          error={Boolean(currentErrors && currentErrors.name)}
                           helperText={
                             currentErrors &&
-                            currentErrors.exercise &&
-                            currentErrors.exercise.message
+                            currentErrors.name &&
+                            currentErrors.name.message
                           }
                           name={name}
                           {...params}

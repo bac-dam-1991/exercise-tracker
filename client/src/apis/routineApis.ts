@@ -1,17 +1,19 @@
 import axios from 'axios';
+import {RoutineBasicDetailsFormFields} from '../forms/RoutineBasicDetailsForm';
+import {ExerciseRoutine} from '../forms/RoutineDayForm';
+import {WithId, WithMetaData} from '../types/UtilTypes';
 
 const routinesAxios = axios.create({
   baseURL: 'http://localhost:3001/api/v1/routines',
 });
 
-export interface RoutineDto {
-  _id: string;
-  name: string;
-  duration: number;
-}
+export type RoutineDto = WithId<WithMetaData<RoutineBasicDetailsFormFields>> & {
+  exerciseRoutines: WithId<ExerciseRoutine>[];
+};
 
 export const getAllRoutinesApi = async () => {
   const response = await routinesAxios.get<RoutineDto[]>('/');
+  console.log(response.data);
   return response.data;
 };
 
