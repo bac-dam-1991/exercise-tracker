@@ -5,6 +5,7 @@ import {
   DialogTitle,
   Stack,
   DialogProps,
+  Box,
 } from '@mui/material';
 import {LoadingButton} from '@mui/lab';
 
@@ -14,6 +15,7 @@ export interface ModalProps extends DialogProps {
   onConfirm?: (() => void) | (() => Promise<void>);
   onDiscard?: (() => void) | (() => Promise<void>);
   loading?: boolean;
+  formId?: string;
 }
 
 export const Modal = ({
@@ -24,13 +26,17 @@ export const Modal = ({
   onCancel,
   onConfirm,
   onDiscard,
+  formId,
   loading,
   ...rest
 }: ModalProps) => {
+  const containsForm = Boolean(formId);
   return (
     <Dialog maxWidth={maxWidth} fullWidth={fullWidth} {...rest}>
       <DialogTitle>{title}</DialogTitle>
-      <DialogContent>{children}</DialogContent>
+      <DialogContent>
+        <Box sx={{py: 2}}>{children}</Box>
+      </DialogContent>
       <DialogActions>
         <Stack direction='row' sx={{width: '100%'}}>
           {onDiscard && (
@@ -53,12 +59,13 @@ export const Modal = ({
                 Cancel
               </LoadingButton>
             )}
-            {onConfirm && (
+            {(onConfirm || containsForm) && (
               <LoadingButton
+                type={containsForm ? 'submit' : 'button'}
                 variant='contained'
                 color='primary'
-                loading={loading}
-                onClick={onConfirm}>
+                form={formId}
+                loading={loading}>
                 Confirm
               </LoadingButton>
             )}

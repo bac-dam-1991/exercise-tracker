@@ -119,15 +119,15 @@ export const createNewRoutineRepo = async ({
   }
 };
 
-export interface AddExercisesToRoutineRepoParams {
+export interface AddExerciseToRoutineRepoParams {
   id: string;
-  exerciseRoutines: ExerciseRoutine[];
+  exerciseRoutine: ExerciseRoutine;
 }
 
-export const addExercisesToRoutineRepo = async ({
+export const addExerciseToRoutineRepo = async ({
   id,
-  exerciseRoutines,
-}: AddExercisesToRoutineRepoParams) => {
+  exerciseRoutine,
+}: AddExerciseToRoutineRepoParams) => {
   try {
     const nowTs = new Date().toISOString();
     const result = await update(
@@ -139,12 +139,8 @@ export const addExercisesToRoutineRepo = async ({
         },
         $push: {
           exerciseRoutines: {
-            $each: exerciseRoutines.map((routine) => {
-              return {
-                ...routine,
-                id: new ObjectId(routine.id),
-              };
-            }),
+            ...exerciseRoutine,
+            id: new ObjectId(exerciseRoutine.id),
           },
         },
       }
@@ -153,7 +149,7 @@ export const addExercisesToRoutineRepo = async ({
   } catch (error) {
     console.log({
       message: (error as Error).message,
-      path: path.join(__dirname, 'addExercisesToRoutineRepo'),
+      path: path.join(__dirname, 'addExerciseToRoutineRepo'),
     });
     throw error;
   }

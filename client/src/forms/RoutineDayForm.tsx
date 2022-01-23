@@ -14,6 +14,8 @@ import {LoadingButton} from '@mui/lab';
 import Joi from 'joi';
 import {joiResolver} from '@hookform/resolvers/joi';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import {JOI_SCHEMA_ERRORS} from '../adapters/joiAdapter';
+const {ANY_REQUIRED, STRING_EMPTY} = JOI_SCHEMA_ERRORS;
 
 export interface RoutineDayFormFields {
   dayIndex: number;
@@ -24,27 +26,38 @@ export interface RoutineDayFormFields {
 }
 
 export const RoutineDaySchema = Joi.object({
-  dayIndex: Joi.number().required(),
+  dayIndex: Joi.number()
+    .required()
+    .messages({[ANY_REQUIRED]: 'Missing day index.'}),
   name: Joi.string()
     .required()
-    .messages({'string.empty': 'Please select an exercise.'}),
-  setType: Joi.string().valid('rep', 'time').required(),
+    .messages({[STRING_EMPTY]: 'Please select an exercise.'}),
+  setType: Joi.string()
+    .valid('rep', 'time')
+    .required()
+    .messages({[STRING_EMPTY]: 'Please select a set type.'}),
   amount: Joi.string()
     .pattern(/[0-9]/)
     .optional()
     .required()
-    .messages({'string.empty': 'This field is required.'}),
+    .messages({[STRING_EMPTY]: 'This field is required.'}),
   setCount: Joi.string()
     .pattern(/[0-9]/)
     .required()
-    .messages({'string.empty': 'Set count is required.'}),
+    .messages({[STRING_EMPTY]: 'Set count is required.'}),
 });
 
 export interface RoutineDayFormProps {
-  defaultValues?: RoutineDayFormFields;
+  defaultValues?: Partial<RoutineDayFormFields>;
+  formId?: string;
+  onFormSubmit: (formData: RoutineDayFormFields) => Promise<void>;
 }
 
-export const RoutineDayForm = ({defaultValues}: RoutineDayFormProps) => {
+export const RoutineDayForm = ({
+  defaultValues,
+  formId,
+  onFormSubmit,
+}: RoutineDayFormProps) => {
   const {loading, exercises, loadAllExercises} = useLoadAllExercises();
   const {
     register,
@@ -62,14 +75,14 @@ export const RoutineDayForm = ({defaultValues}: RoutineDayFormProps) => {
     loadAllExercises();
   }, [loadAllExercises]);
 
-  const onSubmit = (formData: any) => {
-    console.log(formData);
+  const onSubmit = (formData: RoutineDayFormFields) => {
+    onFormSubmit(formData);
   };
 
   const {name, ...rest} = register('name');
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} id={formId}>
       <Stack direction='column' spacing={2}>
         <Stack direction='row' spacing={2} alignItems={'center'}>
           <Grid container spacing={2} style={{marginLeft: '-16px'}}>
@@ -123,6 +136,7 @@ export const RoutineDayForm = ({defaultValues}: RoutineDayFormProps) => {
                 InputProps={{...register('amount')}}
                 error={Boolean(errors.amount)}
                 helperText={errors.amount && errors.amount?.message}
+                type='number'
               />
             </Grid>
             <Grid item xs={6}>
@@ -130,7 +144,7 @@ export const RoutineDayForm = ({defaultValues}: RoutineDayFormProps) => {
                 label='Set'
                 size='small'
                 fullWidth
-                type={'number'}
+                type='number'
                 InputProps={{...register('setCount')}}
                 error={Boolean(errors.setCount)}
                 helperText={errors.setCount && errors.setCount?.message}

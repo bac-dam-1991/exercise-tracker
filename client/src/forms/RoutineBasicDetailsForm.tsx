@@ -3,9 +3,10 @@ import {LoadingButton} from '@mui/lab';
 import {TextField, MenuItem, Stack} from '@mui/material';
 import Joi from 'joi';
 import {useForm} from 'react-hook-form';
-import {JoiSchemaErrors} from '../adapters/joiAdapter';
+import {JOI_SCHEMA_ERRORS} from '../adapters/joiAdapter';
 
-const {STRING_ALPHANUM, STRING_EMPTY, STRING_MAX, STRING_MIN} = JoiSchemaErrors;
+const {STRING_ALPHANUM, STRING_EMPTY, STRING_MAX, STRING_MIN} =
+  JOI_SCHEMA_ERRORS;
 
 export const RoutineDurations = [
   {label: 'Weekly', value: 7, default: true},

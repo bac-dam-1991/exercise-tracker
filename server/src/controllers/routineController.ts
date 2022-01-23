@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import {
-  addExercisesToRoutineService,
+  addExerciseToRoutineService,
   createNewRoutineService,
   getAllRoutinesService,
   getRoutineByIdService,
@@ -51,9 +51,12 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:id/exercise/add', async (req, res, next) => {
   try {
-    const {exerciseRoutines} = req.body;
+    const payload = req.body;
     const id = req.params.id;
-    const result = await addExercisesToRoutineService({id, exerciseRoutines});
+    const result = await addExerciseToRoutineService({
+      id,
+      exerciseRoutine: payload,
+    });
     res.status(201).send(result);
   } catch (error) {
     console.log({

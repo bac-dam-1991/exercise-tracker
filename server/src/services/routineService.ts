@@ -1,5 +1,5 @@
 import {
-  addExercisesToRoutineRepo,
+  addExerciseToRoutineRepo,
   createNewRoutineRepo,
   getAllRoutinesRepo,
   getRoutineByIdRepo,
@@ -64,17 +64,17 @@ export const createNewRoutineService = async ({
   }
 };
 
-export interface AddExercisesToRoutineService {
+export interface AddExerciseToRoutineService {
   id: string;
-  exerciseRoutines: ExerciseRoutine[];
+  exerciseRoutine: ExerciseRoutine;
 }
 
-export const addExercisesToRoutineService = async ({
+export const addExerciseToRoutineService = async ({
   id,
-  exerciseRoutines,
-}: AddExercisesToRoutineService) => {
+  exerciseRoutine,
+}: AddExerciseToRoutineService) => {
   try {
-    const result = await addExercisesToRoutineRepo({id, exerciseRoutines});
+    const result = await addExerciseToRoutineRepo({id, exerciseRoutine});
     return result;
   } catch (error) {
     console.log({
