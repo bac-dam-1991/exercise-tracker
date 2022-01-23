@@ -43,7 +43,6 @@ export const ExerciseListView = () => {
       if (e.key === '+') {
         navigate('/exercises/add');
       }
-      console.log(e);
     };
     return () => {
       window.document.onkeyup = null;

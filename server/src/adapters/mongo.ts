@@ -1,4 +1,5 @@
 import {
+  AggregateOptions,
   Document,
   Filter,
   FindOneAndDeleteOptions,
@@ -42,14 +43,35 @@ export const find = async (
   }
 };
 
+export const aggregate = async (
+  coll: string,
+  pipeline: Document[],
+  options?: AggregateOptions
+) => {
+  const client = await getMongoClient();
+  try {
+    const db = client.db('exercise-tracker');
+    return await db.collection(coll).aggregate(pipeline, options);
+  } catch (error) {
+    console.log({
+      message: (error as Error).message,
+      path: path.join(__dirname, 'aggregate'),
+    });
+    throw error;
+  }
+};
+
 export const insert = async (
   coll: string,
   doc: OptionalUnlessRequiredId<Document>
 ) => {
   const client = await getMongoClient();
   try {
+    const nowTs = new Date().toISOString();
     const db = client.db('exercise-tracker');
-    return await db.collection(coll).insertOne(doc);
+    return await db
+      .collection(coll)
+      .insertOne({...doc, createdAt: nowTs, updatedAt: nowTs});
   } catch (error) {
     console.log({
       message: (error as Error).message,
@@ -77,15 +99,15 @@ export const remove = async (
   }
 };
 
-export const update = async (
+export const update = async <TSchema extends Document = Document>(
   coll: string,
   filter: Filter<Document>,
-  options: UpdateFilter<Document>
+  options: UpdateFilter<TSchema>
 ) => {
   const client = await getMongoClient();
   try {
     const db = client.db('exercise-tracker');
-    return await db.collection(coll).findOneAndUpdate(filter, options);
+    return await db.collection(coll).updateOne(filter, options);
   } catch (error) {
     console.log({
       message: (error as Error).message,

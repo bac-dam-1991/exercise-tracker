@@ -16,6 +16,17 @@ export const RoutinesView = () => {
     loadAllRoutines();
   }, [loadAllRoutines]);
 
+  useEffect(() => {
+    window.document.onkeyup = (e: KeyboardEvent) => {
+      if (e.key === '+') {
+        navigate('/routines/add');
+      }
+    };
+    return () => {
+      window.document.onkeyup = null;
+    };
+  }, []);
+
   return (
     <PageContainer>
       <Stack direction='column' spacing={2}>

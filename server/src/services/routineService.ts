@@ -1,9 +1,11 @@
 import {
+  addExerciseToRoutineRepo,
   createNewRoutineRepo,
   getAllRoutinesRepo,
   getRoutineByIdRepo,
 } from '../repositories/routineRepository';
 import path from 'path';
+import {ExerciseRoutine} from '../types/ExerciseRoutine';
 
 export const getAllRoutinesService = async () => {
   try {
@@ -57,6 +59,27 @@ export const createNewRoutineService = async ({
     console.log({
       message: (error as Error).message,
       path: path.join(__dirname, 'createNewRoutineService'),
+    });
+    throw error;
+  }
+};
+
+export interface AddExerciseToRoutineService {
+  id: string;
+  exerciseRoutine: ExerciseRoutine;
+}
+
+export const addExerciseToRoutineService = async ({
+  id,
+  exerciseRoutine,
+}: AddExerciseToRoutineService) => {
+  try {
+    const result = await addExerciseToRoutineRepo({id, exerciseRoutine});
+    return result;
+  } catch (error) {
+    console.log({
+      message: (error as Error).message,
+      path: path.join(__dirname, 'addExercisesToRoutineService'),
     });
     throw error;
   }
