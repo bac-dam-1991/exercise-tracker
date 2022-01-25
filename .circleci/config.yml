@@ -8,8 +8,7 @@ jobs:
       - checkout
       - run: echo "Run Cypress tests :mag_right:"
       - run: node --version
-      - run: cd ./client
-      - run: pwd
+      - run: cd ${pwd}/client
       - run: ls
       # - run: npm install
       # - run: npm run cy:test
