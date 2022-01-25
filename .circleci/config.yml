@@ -1,16 +1,9 @@
 version: 2.1
 
-jobs:
-  cypress:
-    docker:
-      - image: cimg/node:16.13.0
-    steps:
-      - checkout
-      - run: echo "Run Cypress tests :mag_right:"
-      - run: node --version
-      - run: cd client && npm install && npm run cy:run
+orbs: 
+  cypress: cypress-io/cypress@1.29.0
 
 workflows:
   cypress-workflow:
     jobs:
-      - cypress
+      - cypress/run
