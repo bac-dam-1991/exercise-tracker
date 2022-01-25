@@ -4,5 +4,12 @@ orbs:
 workflows:
   build:
     jobs:
+      - cypress/install:
+          cache-key: >-
+            cache-{{ arch }}-{{ .Branch }}-{{ checksum "client/package.json"
+            }}
       - cypress/run:
+          cache-key: >-
+            cache-{{ arch }}-{{ .Branch }}-{{ checksum "client/package.json"
+            }}
           working_directory: client
