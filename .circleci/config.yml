@@ -4,8 +4,14 @@ orbs:
 workflows:
   build:
     jobs:
+      - cypress/install:
+          cache-key: >-
+            cache-{{ arch }}-{{ .Branch }}-{{ checksum "client/package.json"
+            }}
       - cypress/run:
-          install-command: npm i 
+          cache-key: >-
+            cache-{{ arch }}-{{ .Branch }}-{{ checksum "client/package.json"
+            }}
           working_directory: client
           start: npm start
           wait-on: 'http://localhost:3000'

@@ -16,6 +16,7 @@ describe('Exercise', () => {
     );
     cy.findByRole('link', {name: /Exercises/i}).click();
     cy.location('pathname').should('include', '/exercises');
+    cy.findByText(/Exercise list/i);
     cy.findByTestId('AddCircleOutlineRoundedIcon').click();
     cy.location('pathname').should('include', '/exercises/add');
   });
@@ -34,7 +35,6 @@ describe('Exercise', () => {
       {statusCode: 200, fixture: 'exercises'}
     );
     cy.location('pathname').should('include', '/exercises');
-    cy.findByText(/Exercise list/i);
     cy.findByText(/Push-ups/i);
   });
   it('should fail to add exercise', () => {
