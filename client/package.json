@@ -9,7 +9,8 @@
     "build": "webpack --config webpack.config.js",
     "tsc": "tsc",
     "start": "webpack serve",
-    "prettier": "prettier"
+    "prettier": "prettier",
+    "cy:run": "cypress run --headless"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
