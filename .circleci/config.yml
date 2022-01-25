@@ -5,3 +5,4 @@ workflows:
   build:
     jobs:
       - cypress/run
+        working_directory: client
