@@ -6,25 +6,19 @@ describe('Exercise', () => {
       cy.exerciseData = exerciseData.data[0];
       cy.log(exerciseData);
       cy.visit('/');
+      cy.intercept('GET', '/api/v1/exercises/', {body: {data: []}});
       cy.findByRole('link', {name: /Exercises/i}).click();
       cy.findByText(/Exercise list/i);
       cy.location('pathname').should('include', '/exercises');
-      cy.intercept('GET', '/api/v1/exercises/', {fixture: 'exercises'}).as(
-        'getExercises'
-      );
-      cy.wait('@getExercises');
       cy.findByTestId('AddCircleOutlineRoundedIcon').click();
       cy.location('pathname').should('include', '/exercises/add');
     });
   });
   it('should add exercise successfully', () => {
     cy.findByLabelText('Name').clear().type(cy.exerciseData.name);
+    cy.intercept('POST', '/api/v1/exercises/', {body: {data: []}});
+    cy.intercept('GET', '/api/v1/exercises/', {fixture: 'exercises'});
     cy.findByRole('button', {name: /Save/i}).click();
-    cy.intercept('POST', '/api/v1/exercises/', {body: {data: {}}}).as(
-      'addExercise'
-    );
-    cy.wait('@addExercise');
-    cy.wait('@getExercises');
     cy.location('pathname').should('include', '/exercises');
     cy.findByText(/Exercise list/i);
     cy.findByText(/Push-ups/i);
