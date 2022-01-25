@@ -10,7 +10,8 @@
     "tsc": "tsc",
     "start": "webpack serve",
     "prettier": "prettier",
-    "cy:run": "cypress run --headless"
+    "cy:run": "cypress run --headless",
+    "cy:open": "cypress open"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
