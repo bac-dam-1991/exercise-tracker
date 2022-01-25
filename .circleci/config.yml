@@ -5,5 +5,5 @@ workflows:
   build:
     jobs:
       - cypress/run:
-          install-command: cd client && npm ci
+          install-command: pwd
           working_directory: client
