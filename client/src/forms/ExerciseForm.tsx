@@ -3,13 +3,24 @@ import {Stack, TextField} from '@mui/material';
 import {useForm} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
+import {JOI_SCHEMA_ERRORS} from '../adapters/joiAdapter';
+
+const {STRING_EMPTY, STRING_MAX, STRING_MIN} = JOI_SCHEMA_ERRORS;
 
 export type ExerciseFormFields = {
   name: string;
 };
 
 export const exerciseFormSchema = Joi.object({
-  name: Joi.string().required().max(50).min(3),
+  name: Joi.string()
+    .required()
+    .max(20)
+    .min(3)
+    .messages({
+      [STRING_EMPTY]: 'Exercise name is required.',
+      [STRING_MIN]: 'Exercise name needs at least {#limit} characters.',
+      [STRING_MAX]: 'Exercise name cannot be more than {#limit} characters.',
+    }),
 });
 
 export interface ExerciseFormProps {
