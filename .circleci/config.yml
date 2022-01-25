@@ -1,16 +1,18 @@
 version: 2.1
-
-jobs:
-  say-hello:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello Exercise Tracker"
-
+orbs: 
+  cypress: cypress-io/cypress@1.29.0
 workflows:
-  say-hello-workflow:
+  build:
     jobs:
-      - say-hello
+      - cypress/install:
+          cache-key: >-
+            cache-{{ arch }}-{{ .Branch }}-{{ checksum "client/package.json"
+            }}
+          working_directory: client
+      - cypress/run:
+          cache-key: >-
+            cache-{{ arch }}-{{ .Branch }}-{{ checksum "client/package.json"
+            }}
+          working_directory: client
+          start: npm start
+          wait-on: 'http://localhost:3000'

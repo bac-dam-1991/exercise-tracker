@@ -33,7 +33,8 @@ describe('Exercise', () => {
         url: '/api/v1/exercises/',
       },
       {statusCode: 200, fixture: 'exercises'}
-    );
+    ).as('getExercises');
+    cy.wait('@getExercises');
     cy.location('pathname').should('include', '/exercises');
     cy.findByText(/Exercise list/i);
     cy.findByText(/Push-ups/i);
