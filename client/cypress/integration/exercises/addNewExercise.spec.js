@@ -33,13 +33,11 @@ describe('Exercise', () => {
         url: '/api/v1/exercises/',
       },
       {statusCode: 200, fixture: 'exercises'}
-    );
-    cy.location('pathname')
-      .should('include', '/exercises')
-      .then(() => {
-        cy.findByText(/Exercise list/i);
-        cy.findByText(/Push-ups/i);
-      });
+    ).as('getExercises');
+    cy.wait('@getExercises');
+    cy.location('pathname').should('include', '/exercises');
+    cy.findByText(/Exercise list/i);
+    cy.findByText(/Push-ups/i);
   });
   it('should fail to add exercise', () => {
     cy.findByRole('button', {name: /Save/i}).click();
