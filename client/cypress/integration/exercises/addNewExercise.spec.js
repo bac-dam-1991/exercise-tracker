@@ -34,8 +34,12 @@ describe('Exercise', () => {
       },
       {statusCode: 200, fixture: 'exercises'}
     );
-    cy.location('pathname').should('include', '/exercises');
-    cy.findByText(/Push-ups/i);
+    cy.location('pathname')
+      .should('include', '/exercises')
+      .then(() => {
+        cy.findByText(/Exercise list/i);
+        cy.findByText(/Push-ups/i);
+      });
   });
   it('should fail to add exercise', () => {
     cy.findByRole('button', {name: /Save/i}).click();
