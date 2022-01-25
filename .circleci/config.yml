@@ -6,7 +6,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - run: echo "Run Cypress tests"
+      - run: echo "Run Cypress tests :mag_right:"
       - node/with-cache:
           steps:
             - run: npm install
