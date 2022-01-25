@@ -3,10 +3,11 @@ version: 2.1
 jobs:
   cypress:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/node:16.13.0
     steps:
       - checkout
       - run: echo "Run Cypress tests :mag_right:"
+      - run: node --version
       - run: cd client
       - run: npm install
       - run: npm run cy:test
