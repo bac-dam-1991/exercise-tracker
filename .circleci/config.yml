@@ -1,16 +1,18 @@
 version: 2.1
 
 jobs:
-  say-hello:
+  cypress:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello Exercise Tracker"
+      - run: echo "Run Cypress tests"
+      - node/with-cache:
+          steps:
+            - run: npm install
+      - run: npm run cy:test
 
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
+      - cypress
