@@ -65,6 +65,7 @@ export const Modal = ({
                 variant='contained'
                 color='primary'
                 form={formId}
+                onClick={onConfirm}
                 loading={loading}>
                 Confirm
               </LoadingButton>
