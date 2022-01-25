@@ -18,13 +18,13 @@ export type RoutineDto = WithId<WithMetaData<RoutineBasicDetailsFormFields>> & {
 };
 
 export const getAllRoutinesApi = async () => {
-  const response = await routinesAxios.get<RoutineDto[]>('/');
-  return response.data;
+  const response = await routinesAxios.get<{data: RoutineDto[]}>('/');
+  return response.data.data;
 };
 
 export const getRoutineByIdApi = async (id: string) => {
-  const response = await routinesAxios.get<RoutineDto>(`/${id}`);
-  return response.data;
+  const response = await routinesAxios.get<{data: RoutineDto}>(`/${id}`);
+  return response.data.data;
 };
 
 export interface CreateNewRoutineApiParams {
@@ -39,11 +39,11 @@ export interface CreateNewRoutineApiResult {
 export const createNewRoutineApi = async (
   payload: CreateNewRoutineApiParams
 ) => {
-  const response = await routinesAxios.post<CreateNewRoutineApiResult>(
+  const response = await routinesAxios.post<{data: CreateNewRoutineApiResult}>(
     '/',
     payload
   );
-  return response.data;
+  return response.data.data;
 };
 
 export interface AddExerciseToRoutineApiPayload {

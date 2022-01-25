@@ -8,7 +8,7 @@ router.get('/', async (req, res, next) => {
   try {
     const cursor = await find('exercises');
     const result = await cursor.toArray();
-    res.status(200).send(result);
+    res.status(200).send({data: result});
   } catch (error) {
     console.log({
       message: (error as Error).message,
@@ -26,7 +26,7 @@ router.get('/:id', async (req, res, next) => {
     if (result.length !== 1) {
       throw new Error('Could not find exercise with given id.');
     }
-    res.status(200).send(result[0]);
+    res.status(200).send({data: result[0]});
   } catch (error) {
     console.log({
       message: (error as Error).message,
@@ -42,7 +42,7 @@ router.post('/', async (req, res, next) => {
     const result = await insert('exercises', {
       name,
     });
-    res.status(201).send(result);
+    res.status(201).send({data: result});
   } catch (error) {
     console.log({
       message: (error as Error).message,
@@ -58,7 +58,7 @@ router.delete('/:id', async (req, res, next) => {
     const result = await remove('exercises', {
       _id: new ObjectId(id),
     });
-    res.status(201).send(result);
+    res.status(201).send({data: result});
   } catch (error) {
     console.log({
       message: (error as Error).message,
@@ -83,7 +83,7 @@ router.put('/:id', async (req, res, next) => {
         },
       }
     );
-    res.status(200).send(result);
+    res.status(200).send({data: result});
   } catch (error) {
     console.log({
       message: (error as Error).message,

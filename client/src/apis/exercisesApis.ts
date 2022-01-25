@@ -14,13 +14,13 @@ export interface ExercisePayload {
 }
 
 export const getAllExercisesApi = async (): Promise<ExerciseDto[]> => {
-  const response = await exerciseAxios.get<ExerciseDto[]>('/');
-  return response.data;
+  const response = await exerciseAxios.get<{data: ExerciseDto[]}>('/');
+  return response.data.data;
 };
 
 export const getExerciseById = async (id: string): Promise<ExerciseDto> => {
-  const response = await exerciseAxios.get<ExerciseDto>(`/${id}`);
-  return response.data;
+  const response = await exerciseAxios.get<{data: ExerciseDto}>(`/${id}`);
+  return response.data.data;
 };
 
 export const deleteExerciseByIdApi = async (id: string): Promise<void> => {
@@ -30,8 +30,8 @@ export const deleteExerciseByIdApi = async (id: string): Promise<void> => {
 export const insertNewExerciseApi = async (
   payload: ExercisePayload
 ): Promise<ExerciseDto> => {
-  const response = await exerciseAxios.post<ExerciseDto>('/', payload);
-  return response.data;
+  const response = await exerciseAxios.post<{data: ExerciseDto}>('/', payload);
+  return response.data.data;
 };
 
 export const updateExerciseApi = async (
