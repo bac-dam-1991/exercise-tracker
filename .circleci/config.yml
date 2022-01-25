@@ -7,12 +7,11 @@ jobs:
     steps:
       - checkout
       - run: echo "Run Cypress tests :mag_right:"
-      - node/with-cache:
-          steps:
-            - run: npm install
+      - run: cd client
+      - run: npm install
       - run: npm run cy:test
 
 workflows:
-  say-hello-workflow:
+  cypress-workflow:
     jobs:
       - cypress
