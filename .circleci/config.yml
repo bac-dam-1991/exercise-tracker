@@ -8,9 +8,9 @@ jobs:
       - checkout
       - run: echo "Run Cypress tests :mag_right:"
       - run: node --version
-      - run: cd client
-      - run: npm install
-      - run: npm run cy:test
+      - run: ls
+      # - run: npm install
+      # - run: npm run cy:test
 
 workflows:
   cypress-workflow:
