@@ -17,6 +17,7 @@ import {
 import {useLoadAllExercises} from '../hooks/useExercises';
 import {useSnackbar} from 'notistack';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import {generateArbitaryArray} from '../utils/utils';
 
 export const UpdateRoutineView = () => {
   const [currentTabIndex, setCurrentTabIndex] = useState<number>(0);
@@ -101,7 +102,7 @@ export const UpdateRoutineView = () => {
                 aria-label='Vertical tabs for routine days'
                 variant='scrollable'
                 sx={{borderRight: 1, borderColor: 'divider'}}>
-                {Object.keys(Array.from(Array(routine.duration))).map(
+                {generateArbitaryArray(parseInt(routine.duration)).map(
                   (item, index) => {
                     return (
                       <Tab
@@ -113,7 +114,7 @@ export const UpdateRoutineView = () => {
                   }
                 )}
               </Tabs>
-              {Object.keys(Array.from(Array(routine.duration))).map(
+              {generateArbitaryArray(parseInt(routine.duration)).map(
                 (item, index) => {
                   const currentDayRoutine = routine.exerciseRoutines.filter(
                     (routine) => routine.dayIndex === index

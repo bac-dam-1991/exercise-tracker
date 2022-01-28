@@ -99,15 +99,21 @@ export const remove = async (
   }
 };
 
-export const update = async <TSchema extends Document = Document>(
+export const update = async (
   coll: string,
   filter: Filter<Document>,
-  options: UpdateFilter<TSchema>
+  options: Object
 ) => {
   const client = await getMongoClient();
+  const nowTs = new Date().toISOString();
   try {
     const db = client.db('exercise-tracker');
-    return await db.collection(coll).updateOne(filter, options);
+    return await db.collection(coll).updateOne(filter, {
+      $set: {
+        updatedAt: nowTs,
+      },
+      ...options,
+    });
   } catch (error) {
     console.log({
       message: (error as Error).message,

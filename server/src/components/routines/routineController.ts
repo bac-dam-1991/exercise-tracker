@@ -5,7 +5,7 @@ import {
   createNewRoutineService,
   getAllRoutinesService,
   getRoutineByIdService,
-} from '../services/routineService';
+} from './routineService';
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {

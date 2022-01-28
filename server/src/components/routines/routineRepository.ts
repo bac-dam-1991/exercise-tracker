@@ -1,7 +1,7 @@
 import path from 'path';
-import {aggregate, find, insert, update} from '../adapters/mongo';
+import {aggregate, find, insert, update} from '../../adapters/mongo';
 import {Int32, ObjectId} from 'mongodb';
-import {ExerciseRoutine} from '../types/ExerciseRoutine';
+import {ExerciseRoutine} from '../../types/ExerciseRoutine';
 
 export interface GetRoutineByIdRepoParams {
   id: string;
@@ -61,6 +61,7 @@ export const getRoutineByIdRepo = async ({id}: GetRoutineByIdRepoParams) => {
 
     const routine = result[0];
 
+    // This filter removes empty objects, i.e., {}
     routine.exerciseRoutines = routine.exerciseRoutines.filter(
       (exercise: Record<string, unknown>) => {
         if (!Object.keys(exercise).length) {
@@ -134,9 +135,6 @@ export const addExerciseToRoutineRepo = async ({
       'routines',
       {_id: new ObjectId(id)},
       {
-        $set: {
-          updatedAt: nowTs,
-        },
         $push: {
           exerciseRoutines: {
             ...exerciseRoutine,

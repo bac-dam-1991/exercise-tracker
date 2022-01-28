@@ -9,6 +9,11 @@ import {
 } from '@mui/material';
 import {LoadingButton} from '@mui/lab';
 
+export interface MultiModalControl<T> {
+  name: T | null;
+  [name: string]: unknown;
+}
+
 export interface ModalProps extends DialogProps {
   title: string;
   onCancel?: (() => void) | (() => Promise<void>);

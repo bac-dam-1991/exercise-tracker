@@ -3,9 +3,9 @@ import {
   createNewRoutineRepo,
   getAllRoutinesRepo,
   getRoutineByIdRepo,
-} from '../repositories/routineRepository';
+} from './routineRepository';
 import path from 'path';
-import {ExerciseRoutine} from '../types/ExerciseRoutine';
+import {ExerciseRoutine} from '../../types/ExerciseRoutine';
 
 export const getAllRoutinesService = async () => {
   try {
