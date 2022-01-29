@@ -1,0 +1,36 @@
+{
+  "data": [
+    {
+      "_id": "61f46b2f851cfda03c3595fe",
+      "index": 0,
+      "name": "Pancakes",
+      "date": "2022-01-29T05:00:00.000Z",
+      "description": "Pancakes made from oats and banana served with fresh avocado and raspberries.",
+      "mealType": "breakfast"
+    },
+    {
+      "_id": "61f46b2f851cfda03c3595fe",
+      "index": 1,
+      "name": "Toast and cheese",
+      "date": "2022-01-29T05:00:00.000Z",
+      "description": "",
+      "mealType": "lunch"
+    },
+    {
+      "_id": "61f46b2f851cfda03c3595fe",
+      "index": 2,
+      "name": "Chicken soup",
+      "date": "2022-01-29T05:00:00.000Z",
+      "description": "Minced chicken balls with buckwheat seeds in vegetable soup.",
+      "mealType": "lunch"
+    },
+    {
+      "_id": "61f46b2f851cfda03c3595fe",
+      "index": 6,
+      "name": "Pho",
+      "date": "2022-01-29T05:00:00.000Z",
+      "description": "Vietnamese rice noodle in broth soup.",
+      "mealType": "dinner"
+    }
+  ]
+}
