@@ -146,7 +146,7 @@ export const CalendarView = () => {
           spacing={2}
           sx={{marginBottom: 2}}
           justifyContent={'space-between'}>
-          <Typography variant='page-title'>Calendar</Typography>
+          <Typography variant='page-title'>My Calendar</Typography>
           <Stack direction='row' alignItems={'center'} spacing={2}>
             <Tooltip
               arrow
