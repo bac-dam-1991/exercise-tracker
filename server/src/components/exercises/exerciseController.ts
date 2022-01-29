@@ -1,6 +1,6 @@
 import express from 'express';
 import {ObjectId} from 'mongodb';
-import {find, insert, remove, update} from '../adapters/mongo';
+import {find, insert, remove, update} from '../../adapters/mongo';
 import path from 'path';
 const router = express.Router();
 
