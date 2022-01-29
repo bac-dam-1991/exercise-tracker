@@ -8,15 +8,25 @@ export interface AddMealToCalendarServiceParams {
   name: string;
   date: string;
   calendarId: string;
+  description: string;
+  mealType: string;
 }
 
 export const addMealToCalendarService = async ({
   name,
   date,
   calendarId,
+  description,
+  mealType,
 }: AddMealToCalendarServiceParams) => {
   try {
-    const result = await addMealToCalendarRepo({name, date, calendarId});
+    const result = await addMealToCalendarRepo({
+      name,
+      date,
+      calendarId,
+      description,
+      mealType,
+    });
     return result;
   } catch (error) {
     console.log({

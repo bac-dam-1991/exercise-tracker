@@ -21,7 +21,6 @@ export const useLoadMealsForCalendarDaysById = () => {
           dateTo,
           dateFrom,
         });
-        console.log(data);
         setMeals(data);
       } catch (error) {
         enqueueSnackbar((error as Error).message, {variant: 'error'});

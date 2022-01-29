@@ -9,12 +9,16 @@ export interface AddMealToCalendarRepoParams {
   name: string;
   date: string;
   calendarId: string;
+  description: string;
+  mealType: string;
 }
 
 export const addMealToCalendarRepo = async ({
   name,
   date,
   calendarId,
+  description,
+  mealType,
 }: AddMealToCalendarRepoParams) => {
   try {
     const result = await update(
@@ -24,7 +28,7 @@ export const addMealToCalendarRepo = async ({
       },
       {
         $push: {
-          meals: {name, date},
+          meals: {name, date, description, mealType},
         },
       }
     );
@@ -74,6 +78,8 @@ export const getMealsForCalendarDaysRepo = async ({
           date: {
             $toDate: '$meals.date',
           },
+          description: '$meals.description',
+          mealType: '$meals.mealType',
         },
       },
       {

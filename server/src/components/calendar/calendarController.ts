@@ -6,11 +6,17 @@ import {
 } from './calendarService';
 const router = express.Router();
 
-router.post('/:calendarId/add-meal', async (req, res, next) => {
+router.post('/:calendarId/meals', async (req, res, next) => {
   try {
-    const {date, name} = req.body;
+    const {date, name, description, mealType} = req.body;
     const {calendarId} = req.params;
-    const result = await addMealToCalendarService({name, date, calendarId});
+    const result = await addMealToCalendarService({
+      name,
+      date,
+      calendarId,
+      description,
+      mealType,
+    });
     res.status(201).send({data: result});
   } catch (error) {
     console.log({

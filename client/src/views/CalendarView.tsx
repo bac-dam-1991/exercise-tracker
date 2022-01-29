@@ -30,6 +30,7 @@ import {Modal, MultiModalControl} from '../components/Modal';
 import {MealForm, MealFormFields} from '../forms/MealForm';
 import {useSnackbar} from 'notistack';
 import {useLoadMealsForCalendarDaysById} from '../hooks/useCalendar';
+import {addMealToCalendarApi} from '../apis/calendarApis';
 
 export type ModalType = 'addMeal';
 
@@ -56,7 +57,6 @@ export const CalendarView = () => {
 
   useEffect(() => {
     const {startDate, dayCount} = calendar;
-
     const dateFrom = format(startDate, 'yyyy-MM-dd');
     const dateTo = format(addDays(startDate, dayCount), 'yyyy-MM-dd');
 
@@ -111,10 +111,26 @@ export const CalendarView = () => {
     setModalToOpen(defaultMultiModalControlState);
   };
 
-  const addMeal = async (formData: MealFormFields) => {
+  const addMeal = async ({name, mealType, description}: MealFormFields) => {
+    const {startDate, dayCount} = calendar;
+
+    const dateFrom = format(startDate, 'yyyy-MM-dd');
+    const dateTo = format(addDays(startDate, dayCount), 'yyyy-MM-dd');
+
     try {
       const date = zeroMinuteSecondAndMilli(modalToOpen.selectedDate as Date);
-
+      await addMealToCalendarApi({
+        id: '61f46b2f851cfda03c3595fe',
+        date: date.toISOString(),
+        name,
+        description,
+        mealType,
+      });
+      await loadMealsForCalendarDays({
+        id: '61f46b2f851cfda03c3595fe',
+        dateFrom,
+        dateTo,
+      });
       closeModal();
     } catch (error) {
       enqueueSnackbar((error as Error).message, {variant: 'error'});
@@ -161,21 +177,33 @@ export const CalendarView = () => {
                 key={date}
                 defaultExpanded={isSameDay(new Date(), day)}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  {date} {day.toISOString()}
+                  {date}
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Stack spacing={2} direction='column'>
+                  <Stack
+                    spacing={2}
+                    direction='column'
+                    alignItems={'flex-start'}>
                     {meals
                       .filter((meal) => {
                         return isSameDay(new Date(meal.date), day);
                       })
                       .map((meal) => {
-                        return <Typography>{meal.name}</Typography>;
+                        return (
+                          <Stack key={`${meal.name}-${meal.date}`}>
+                            <Typography>
+                              {meal.name} ({meal.mealType})
+                            </Typography>
+                            <Typography variant='caption'>
+                              {meal.description}
+                            </Typography>
+                          </Stack>
+                        );
                       })}
+                    <Button onClick={() => openModal('addMeal', day)}>
+                      Add meal
+                    </Button>
                   </Stack>
-                  <Button onClick={() => openModal('addMeal', day)}>
-                    Add meal
-                  </Button>
                 </AccordionDetails>
               </Accordion>
             );
